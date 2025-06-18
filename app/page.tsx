@@ -1,103 +1,84 @@
-import Image from "next/image";
+'use client';
+import { useState, useEffect } from 'react';
+import styles from './page.module.css';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [showChat, setShowChat] = useState(false);
+  const [messages, setMessages] = useState([
+    { sender: 'Shaniqua', text: "🌺 Hi sugar! Welcome to your digital beach. What can I help with?" }
+  ]);
+  const [input, setInput] = useState('');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleSend = () => {
+    if (!input.trim()) return;
+    setMessages([...messages, { sender: 'You', text: input }]);
+    setTimeout(() => {
+      setMessages(prev => [...prev, {
+        sender: 'Shaniqua',
+        text: generateReply(input)
+      }]);
+    }, 600);
+    setInput('');
+    playClick();
+  };
+
+  const generateReply = (text: string) => {
+    const t = text.toLowerCase();
+    if (t.includes('hello') || t.includes('hi')) return 'Hey hey! How’s the surf treating ya? 🌊';
+    if (t.includes('vault')) return 'The SaltIQ Vault is your beach-front bungalow of power 🔐';
+    if (t.includes('backup')) return 'Instant restore? You got it, babe 🌀';
+    return 'Just soaking up data rays 🌞';
+  };
+
+  const playClick = () => {
+    new Audio('/click.wav').play();
+  };
+
+  return (
+    <main className={styles.main}>
+      <div className={styles.overlay}>
+        <h2>COMING SOON</h2>
+        <h1>SALTIQ CLIENT VAULT</h1>
+        <p className={styles.tagline}>
+          A beachy AI-powered command center – secure, fluid, and always glowing.
+        </p>
+
+        <div className={styles.form}>
+          <input type="text" placeholder="Username" />
+          <input type="password" placeholder="Password" />
+          <button onClick={playClick}>Login</button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <div className={styles.features}>
+          <h3>🧠 Features</h3>
+          <p>🔐 Track spending & view invoices</p>
+          <p>📊 Real-time dashboards & reports</p>
+          <p>🔄 Restore files instantly</p>
+          <p>🧬 Fully encrypted. Vault-grade logic.</p>
+        </div>
+
+        <button className={styles.chatToggle} onClick={() => setShowChat(!showChat)}>
+          💬 Chat with Shaniqua
+        </button>
+
+        {showChat && (
+          <div className={styles.chatModal}>
+            <div className={styles.chatHeader}>💖 Shaniqua AI</div>
+            <div className={styles.chatBody}>
+              {messages.map((msg, idx) => (
+                <div key={idx}><strong>{msg.sender}:</strong> {msg.text}</div>
+              ))}
+            </div>
+            <input
+              type="text"
+              placeholder="Type here..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+            />
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
